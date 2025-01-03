@@ -71,10 +71,10 @@ tell application "Microsoft Edge"
     end tell'
 '''
 
-alt-h =         'focus --boundaries-action wrap-around-the-workspace left'
-alt-j =         'focus --boundaries-action wrap-around-the-workspace down'
-alt-k =         'focus --boundaries-action wrap-around-the-workspace up'
-alt-l = 'focus --boundaries-action wrap-around-the-workspace right'
+alt-h =         'focus --ignore-floating --boundaries-action wrap-around-the-workspace left'
+alt-j =         'focus --ignore-floating --boundaries-action wrap-around-the-workspace down'
+alt-k =         'focus --ignore-floating --boundaries-action wrap-around-the-workspace up'
+alt-l =		'focus --ignore-floating --boundaries-action wrap-around-the-workspace right'
 
 alt-shift-h = 'move left'
 alt-shift-j = 'move down'

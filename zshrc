@@ -130,5 +130,3 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias reload="source ~/.zshrc"
-
-eval $(thefuck --alias)

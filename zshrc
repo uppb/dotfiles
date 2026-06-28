@@ -78,6 +78,7 @@ plugins=(
     docker-compose
     encode64
     extract
+    fzf
     kubectl
     macos
     ssh

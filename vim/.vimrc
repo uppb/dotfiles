@@ -39,6 +39,7 @@ set showmode
 set wildmenu
 set wildmode=list:longest
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+set rtp+=/opt/homebrew/opt/fzf
 
 
 

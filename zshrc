@@ -97,6 +97,16 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+# Set editor dynamically based on availability
+if (( $+commands[nvim] )); then
+    alias vim="nvim"
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+else
+    alias vim="vim"
+    export EDITOR="vim"
+    export VISUAL="vim"
+fi
 
 # export MANPATH="/usr/local/man:$MANPATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"

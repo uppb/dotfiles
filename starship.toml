@@ -1,34 +1,74 @@
-format = "$directory$git_branch$git_status[ ](fg:#444444)"
-right_format = "[](fg:#444444)$status$cmd_duration$nix_shell$custom"
+palette = "catppuccin_mocha"
+format = "$directory$fill$git_branch$git_status${custom.docker_context}$java$python$golang$nix_shell${custom.direnv}${custom.vim_shell}$line_break$character"
+right_format = "$status$cmd_duration"
+
+[palettes.catppuccin_mocha]
+bg0 = "#1e1e2e"
+bg1 = "#313244"
+fg1 = "#cdd6f4"
+gray = "#6c7086"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+purple = "#cba6f7"
+aqua = "#94e2d5"
+orange = "#fab387"
+
 [cmd_duration]
-format = "[](fg:#7a7a7a bg:#444444)[ $duration ]($style)"
-style = "fg:#9b9b9b bg:#444444"
+format = "[](fg:gray)[ $duration ]($style)"
+style = "fg:fg1"
 
 [custom]
 [custom.direnv]
-format = "[](fg:#7a7a7a bg:#444444)[ $symbol ]($style)"
-style = "fg:#7a7a7a bg:#444444"
-symbol = "[▼](fg:white bg:#444444)"
+format = "[](fg:gray)[ $symbol ]($style)"
+style = "fg:gray"
+symbol = "[▼](fg:fg1)"
 when = "test \"$DIRENV_WATCHES\" != \"\""
 
 [custom.vim_shell]
-format = "[](fg:#7a7a7a bg:#444444)[ $symbol ]($style)"
-style = "fg:#7a7a7a bg:#444444"
-symbol = "[](fg:green bg:#444444)"
+format = "[](fg:gray)[ $symbol ]($style)"
+style = "fg:gray"
+symbol = "[](fg:green)"
 when = "test \"$VIMRUNTIME\" != \"\""
+
+[custom.docker_context]
+command = "docker context show 2>/dev/null"
+format = "[](fg:gray)[ docker $output ]($style)"
+style = "fg:blue"
+shell = ["sh"]
+when = '''
+ctx=$(docker context show 2>/dev/null) || exit 1
+case "$ctx" in
+  default|desktop-linux|orbstack|"") exit 1 ;;
+esac
+
+dir=$PWD
+while [ "$dir" != "/" ]; do
+  for file in compose.yml compose.yaml docker-compose.yml docker-compose.yaml Dockerfile; do
+    [ -e "$dir/$file" ] && exit 0
+  done
+  dir=$(dirname "$dir")
+done
+
+exit 1
+'''
 
 [directory]
 format = "[ $path ]($style)"
-style = "fg:#00afff bg:#444444"
+style = "fg:blue"
 truncate_to_repo = false
 
+[fill]
+symbol = " "
+
 [git_branch]
-format = "[](fg:#7a7a7a bg:#444444)[ $branch(:$remote_branch) ]($style)"
-style = "fg:#00dd00 bg:#444444"
+format = "[ git:$branch(:$remote_branch) ]($style)"
+style = "fg:green"
 
 [git_metrics]
-added_style = "fg:#b4951e bg:#444444"
-deleted_style = "fg:bright-red bg:235"
+added_style = "fg:yellow"
+deleted_style = "fg:red"
 disabled = false
 format = "([+$added]($added_style))[]($added_style)"
 
@@ -36,25 +76,52 @@ format = "([+$added]($added_style))[]($added_style)"
 ahead = "⇡$count"
 behind = "⇣$count"
 diverged = "⇡$ahead_count⇣$behind_count"
-format = "[$all_status$ahead_behind ]($style)"
-modified = "[!$count ](fg:#b4951e bg:#444444)"
-style = "fg:#b4951e bg:#444444"
-untracked = "[?$count ](fg:#00afff bg:#444444)"
+format = "[](fg:gray)[$all_status$ahead_behind]($style)"
+modified = "[!$count ](fg:yellow)"
+style = "fg:yellow"
+untracked = "[?$count ](fg:blue)"
 
 [hg_branch]
 format = "[ $symbol$branch ]($style)"
 symbol = " "
 
+[java]
+format = "[](fg:gray)[ java $version ]($style)"
+style = "fg:orange"
+symbol = ""
+version_format = "${raw}"
+
+[golang]
+format = "[](fg:gray)[ go $version ]($style)"
+style = "fg:aqua"
+symbol = ""
+version_format = "${raw}"
+
 [nix_shell]
-format = "[](fg:#7a7a7a bg:#444444)[ $state $symbol ]($style)"
-style = "fg:#5690ad bg:#444444"
+format = "[](fg:gray)[ nix $state $symbol ]($style)"
+style = "fg:blue"
 symbol = "❄️"
+
+[python]
+detect_env_vars = []
+format = '[](fg:gray)[ python $version( \($virtualenv\)) ]($style)'
+style = "fg:yellow"
+symbol = ""
+version_format = "${raw}"
 
 [status]
 disabled = false
-format = "[ $signal_name $symbol ]($style)"
+format = "[ $symbol ]($style)"
 map_symbol = true
-sigint_symbol = "[✘](fg:#d60202 bg:#444444)"
-style = "bg:#444444"
-success_symbol = "[✔](fg:green bg:#444444)"
-symbol = "[✘](fg:#d60202 bg:#444444)"
+sigint_symbol = "[✘](fg:red)"
+style = ""
+success_symbol = "[✔](fg:green)"
+symbol = "[✘](fg:red)"
+
+[character]
+success_symbol = "[❯](fg:green)"
+error_symbol = "[❯](fg:red)"
+vimcmd_symbol = "[❮](fg:green)"
+vimcmd_visual_symbol = "[❮](fg:yellow)"
+vimcmd_replace_symbol = "[❮](fg:purple)"
+vimcmd_replace_one_symbol = "[❮](fg:purple)"

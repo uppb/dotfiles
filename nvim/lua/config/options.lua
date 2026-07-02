@@ -5,11 +5,3 @@ vim.opt.clipboard = ""
 vim.g.autoformat = false
 
 vim.opt.autoread = true
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
-  pattern = "*",
-  command = "checktime",
-})
-vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "InsertLeave" }, {
-  pattern = "*",
-  command = "silent! update",
-})
